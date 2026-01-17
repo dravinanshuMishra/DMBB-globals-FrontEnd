@@ -3,7 +3,6 @@ import { motion as Motion } from "framer-motion";
 import AnimatedCounter from "../components/shared/AnimatedCounter.jsx";
 import { useNavigate } from "react-router-dom";
 
-
 const stats = [
   { value: 10, suffix: "+", label: "Projects Delivered Globally" },
   { value: 2, suffix: "+", label: "Countries Served" },
@@ -28,7 +27,7 @@ const fadeUp = {
     y: 0,
     transition: {
       duration: 0.7,
-      ease: [0.22, 1, 0.36, 1], // premium easing
+      ease: [0.22, 1, 0.36, 1],
     },
   },
 };
@@ -46,8 +45,9 @@ const float = {
 
 const HeroSection = () => {
   const navigate = useNavigate();
+
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-[linear-gradient(to_bottom_right,#eef2ff,#ffffff,#e0e7ff)]">
+    <section className="relative min-h-screen flex flex-col lg:flex-row items-center overflow-hidden bg-[linear-gradient(to_bottom_right,#eef2ff,#ffffff,#e0e7ff)] py-10 md:py-0">
       {/* Ambient Blur Elements */}
       <Motion.div
         {...float}
@@ -63,15 +63,15 @@ const HeroSection = () => {
         variants={container}
         initial="hidden"
         animate="visible"
-        className="relative max-w-7xl mx-auto px-6 md:px-16 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
+        className="relative max-w-7xl mx-auto px-6 md:px-16 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full"
       >
         {/* LEFT CONTENT */}
-        <div>
+        <div className="flex flex-col">
           <Motion.span
             variants={fadeUp}
-            className="inline-block mb-6 px-4 py-1.5 rounded-full bg-sky-100 text-sky-600 text-sm font-semibold"
+            className="inline-flex mb-6 px-3 w-full md:w-[70%] py-1.5 text-center rounded-full bg-linear-to-r from-sky-400 to-indigo-500 text-white text-sm font-semibold shadow-md hover:shadow-lg transition-all"
           >
-            Global Freelance Tech Network
+            DMBB Global Freelance Tech Partners & Network
           </Motion.span>
 
           <Motion.h1
@@ -93,13 +93,13 @@ const HeroSection = () => {
 
           <Motion.div
             variants={fadeUp}
-            className="flex flex-col sm:flex-row gap-4"
+            className="flex flex-col sm:flex-row gap-4 mb-10"
           >
             <Motion.button
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.97 }}
               className="px-8 py-3.5 rounded-full bg-linear-to-r from-sky-500 to-indigo-500 text-white font-semibold shadow-lg cursor-pointer"
-              onClick={() => navigate("/contact") }
+              onClick={() => navigate("/contact")}
             >
               Get Free Consultation
             </Motion.button>
@@ -108,14 +108,32 @@ const HeroSection = () => {
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.97 }}
               className="px-8 py-3.5 rounded-full border-2 border-sky-500 text-sky-500 font-semibold bg-white/30 backdrop-blur-md cursor-pointer"
-              onClick={() => navigate("/contact") }
+              onClick={() => navigate("/contact")}
             >
               Hire Tech Experts
             </Motion.button>
           </Motion.div>
+
+          {/* MOBILE STATS */}
+          <div className="grid grid-cols-2 gap-4 lg:hidden">
+            {stats.map((stat, idx) => (
+              <Motion.div
+                key={idx}
+                variants={fadeUp}
+                className="bg-white/50 backdrop-blur-xl border border-slate-200 rounded-2xl p-4 flex flex-col items-center shadow-lg"
+              >
+                <h4 className="text-2xl font-extrabold bg-clip-text text-transparent bg-linear-to-r from-sky-500 to-indigo-500 mb-1">
+                  <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                </h4>
+                <p className="text-slate-700 text-sm font-medium text-center">
+                  {stat.label}
+                </p>
+              </Motion.div>
+            ))}
+          </div>
         </div>
 
-        {/* RIGHT STATS CARD */}
+        {/* RIGHT STATS CARD (Desktop) */}
         <Motion.div
           variants={fadeUp}
           whileHover={{ y: -6 }}
