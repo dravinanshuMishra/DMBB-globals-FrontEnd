@@ -25,7 +25,7 @@ const coFounders = [
       email: "mailto:dravinanshu98@gmail.com",
       portfolio: "NA",
     },
-    accent: "text-indigo-600",
+    accent: "bg-indigo-600 text-white",
   },
   {
     initials: "BB",
@@ -43,7 +43,7 @@ const coFounders = [
       email: "mailto:bbiplab165@gmail.com",
       portfolio: "https://biplab-biswas.netlify.app/",
     },
-    accent: "text-emerald-600",
+    accent: "bg-emerald-600 text-white",
   },
 ];
 
@@ -130,9 +130,9 @@ const AboutUs = () => {
             >
               <div className="flex items-center gap-5 mb-8">
                 <div
-                  className={`w-14 h-14 rounded-2xl flex items-center justify-center font-bold text-white text-lg ${co.accent.replace(
+                  className={`w-14 h-14 rounded-2xl flex items-center justify-center text-white font-bold text-lg ${co.accent.replace(
                     "text",
-                    "bg"
+                    "bg",
                   )}`}
                 >
                   {co.initials}
@@ -161,7 +161,7 @@ const AboutUs = () => {
                     href={co.links.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`${co.accent} hover:underline`}
+                    className={` hover:underline`}
                   >
                     GitHub
                   </a>
@@ -171,7 +171,7 @@ const AboutUs = () => {
                     href={co.links.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`${co.accent} hover:underline`}
+                    className={` hover:underline`}
                   >
                     LinkedIn
                   </a>
@@ -179,7 +179,7 @@ const AboutUs = () => {
                 {co.links.email && (
                   <a
                     href={co.links.email}
-                    className={`${co.accent} hover:underline`}
+                    className={` hover:underline`}
                   >
                     Email
                   </a>
@@ -189,7 +189,7 @@ const AboutUs = () => {
                     href={co.links.portfolio}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`${co.accent} hover:underline`}
+                    className={` hover:underline`}
                   >
                     Portfolio
                   </a>
