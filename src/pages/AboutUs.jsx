@@ -1,8 +1,10 @@
 import React from "react";
+import { motion as Motion } from "framer-motion";
 import logo from "../assets/logo/logoSet.png";
+ import AnimatedCounter from "../components/shared/AnimatedCounter.jsx";
 
 const stats = [
-  { value: "50+", label: "Freelance Experts" },
+  { value: "5+", label: "Freelance Experts" },
   { value: "20+", label: "Global Clients" },
   { value: "100%", label: "Client Satisfaction" },
   { value: "24/7", label: "Project Support" },
@@ -47,53 +49,147 @@ const coFounders = [
   },
 ];
 
+// Motion Variants
+const container = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.2 } },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+};
+
+const float = {
+  animate: {
+    y: [0, -10, 0],
+  },
+  transition: {
+    duration: 4,
+    repeat: Infinity,
+    ease: "easeInOut",
+  },
+};
+
+const slideInFrom = (direction = "bottom") => {
+  const positions = {
+    bottom: { opacity: 0, y: 50 },
+    top: { opacity: 0, y: -50 },
+    left: { opacity: 0, x: -50 },
+    right: { opacity: 0, x: 50 },
+  };
+  return {
+    hidden: positions[direction],
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      transition: { duration: 0.7, ease: "easeOut" },
+    },
+  };
+};
+
 const AboutUs = () => {
   return (
     <section className="bg-linear-to-br from-[#eef2ff] via-[#ffffff] to-[#e0e7ff]">
       <div className="max-w-7xl mx-auto px-6 md:px-16 py-32 space-y-28">
         {/* Hero Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
-          <div className="flex justify-center lg:justify-start">
+        <Motion.div
+          className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12"
+          variants={container}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {/* Floating Logo */}
+          <Motion.div
+            variants={float}
+            className="flex justify-center lg:justify-start"
+          >
             <img
               src={logo}
               alt="DMBB Global Hero"
               className="w-full max-w-lg rounded-3xl transform hover:scale-105 transition duration-500"
             />
-          </div>
+          </Motion.div>
 
-          <div className="text-center lg:text-left space-y-6">
-            <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight">
-              Building Technology <br />
-              <span className="text-sky-500">Partnerships That Scale</span>
-            </h1>
-            <p className="text-lg md:text-xl text-slate-600 leading-relaxed">
+          {/* Hero Text */}
+          <Motion.div
+            variants={container}
+            className="text-center lg:text-left space-y-6"
+          >
+            {["Building Technology", "Partnerships That Scale"].map(
+              (line, i) => (
+                <Motion.h1
+                  key={i}
+                  variants={fadeUp}
+                  className={`text-4xl md:text-5xl font-extrabold leading-tight ${
+                    i === 1 ? "text-sky-500" : "text-slate-900"
+                  }`}
+                >
+                  {line}
+                </Motion.h1>
+              ),
+            )}
+            <Motion.p
+              variants={fadeUp}
+              className="text-lg md:text-xl text-slate-600 leading-relaxed"
+            >
               DMBB Global is a trusted freelance tech network helping startups
               and enterprises build secure, scalable, and future-ready digital
               products with top global talent.
-            </p>
-          </div>
-        </div>
-
+            </Motion.p>
+          </Motion.div>
+        </Motion.div>
+       
         {/* Stats Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {stats.map((item, idx) => (
-            <div
-              key={idx}
-              className="p-8 bg-white/70 backdrop-blur-lg rounded-3xl border border-slate-200 shadow-md hover:shadow-xl hover:scale-105 transform transition duration-300 text-center"
-            >
-              <h4 className="text-4xl font-bold text-sky-500 mb-2">
-                {item.value}
-              </h4>
-              <p className="text-slate-700 font-medium">{item.label}</p>
-            </div>
-          ))}
-        </div>
+        <Motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+          variants={container}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {stats.map((item, idx) => {
+            // Determine numeric value and suffix
+            const numericValue = parseInt(item.value); // e.g., "50+" -> 50
+            const suffix = item.value.replace(numericValue, ""); // "+" or "%" or "24/7" logic
 
+            return (
+              <Motion.div
+                key={idx}
+                variants={slideInFrom(idx % 2 === 0 ? "left" : "right")}
+                whileHover={{
+                  scale: 1.08,
+                  boxShadow: "0px 15px 30px rgba(0,0,0,0.15)",
+                }}
+                className="p-8 bg-white/70 backdrop-blur-lg rounded-3xl border border-slate-200 shadow-md transform transition duration-500 text-center"
+              >
+                <h4 className="text-4xl font-bold text-sky-500 mb-2">
+                  <AnimatedCounter value={numericValue} suffix={suffix} />
+                </h4>
+                <p className="text-slate-700 font-medium">{item.label}</p>
+              </Motion.div>
+            );
+          })}
+        </Motion.div>
         {/* Who We Are & Mission */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <Motion.div
+          className="grid grid-cols-1 lg:grid-cols-2 gap-12"
+          variants={container}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           {["Who We Are", "Our Mission"].map((title, idx) => (
-            <div
+            <Motion.div
               key={idx}
+              variants={slideInFrom("bottom")}
+              whileHover={{ rotate: 1.5 }}
               className="p-8 bg-white/70 backdrop-blur-lg rounded-3xl border border-slate-200 shadow-md hover:shadow-xl transition"
             >
               <h3 className="text-2xl font-semibold text-slate-900 mb-3">
@@ -104,29 +200,27 @@ const AboutUs = () => {
                   ? "We operate as an extension of your in-house team. Our global network of vetted freelance developers, designers, and engineers ensures fast execution without compromising quality."
                   : "To empower businesses with flexible, reliable, and cost-effective technology solutions by connecting them with world-class freelance professionals."}
               </p>
-            </div>
+            </Motion.div>
           ))}
-        </div>
-
-        {/* Founding Partners Meta */}
-        <div className="hidden lg:flex items-center justify-end gap-6">
-          <div className="text-xs text-slate-600 text-right">
-            <span className="font-medium text-slate-800">
-              Dravinanshu Mishra
-            </span>{" "}
-            & <span className="font-medium text-slate-800">Biplab Biswas</span>
-            <div className="text-[11px] text-slate-500">Founding Partners</div>
-          </div>
-          <div className="h-8 w-px bg-slate-300" />
-          <div className="text-xs text-slate-500">Est. 5 Jan 2026</div>
-        </div>
-
+        </Motion.div>
         {/* Co-Founders Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <Motion.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-12"
+          variants={container}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           {coFounders.map((co, idx) => (
-            <div
+            <Motion.div
               key={idx}
-              className="bg-white/70 backdrop-blur-xl rounded-3xl p-10 border border-slate-200 shadow-lg hover:shadow-2xl transition"
+              variants={slideInFrom("bottom")}
+              whileHover={{
+                y: -10,
+                rotate: 1.5,
+                boxShadow: "0px 20px 40px rgba(0,0,0,0.15)",
+              }}
+              className="bg-white/70 backdrop-blur-xl rounded-3xl p-10 border border-slate-200 shadow-lg transition"
             >
               <div className="flex items-center gap-5 mb-8">
                 <div
@@ -137,7 +231,6 @@ const AboutUs = () => {
                 >
                   {co.initials}
                 </div>
-
                 <div>
                   <h3 className="text-xl font-semibold text-slate-900">
                     {co.name}
@@ -161,7 +254,7 @@ const AboutUs = () => {
                     href={co.links.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={` hover:underline`}
+                    className="hover:underline"
                   >
                     GitHub
                   </a>
@@ -171,16 +264,13 @@ const AboutUs = () => {
                     href={co.links.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={` hover:underline`}
+                    className="hover:underline"
                   >
                     LinkedIn
                   </a>
                 )}
                 {co.links.email && (
-                  <a
-                    href={co.links.email}
-                    className={` hover:underline`}
-                  >
+                  <a href={co.links.email} className="hover:underline">
                     Email
                   </a>
                 )}
@@ -189,15 +279,15 @@ const AboutUs = () => {
                     href={co.links.portfolio}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={` hover:underline`}
+                    className="hover:underline"
                   >
                     Portfolio
                   </a>
                 )}
               </div>
-            </div>
+            </Motion.div>
           ))}
-        </div>
+        </Motion.div>
       </div>
     </section>
   );
