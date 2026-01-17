@@ -1,48 +1,104 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import { Typography } from "antd";
+import { FiMenu, FiX } from "react-icons/fi";
 import logo from "../../assets/logo/logoSet.png";
 
 const { Title, Text } = Typography;
 
+const navLinks = [
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+  { name: "Services", path: "/services" },
+  { name: "Testimonials", path: "/testimonials" },
+  { name: "Contact", path: "/contact" },
+];
+
 const Header = () => {
-  const establishedYear = `20XX`;
+  const establishedYear = "2025";
+  const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Close mobile menu on navigation
+  useEffect(() => {
+    setTimeout(() => setMenuOpen(false), 0);
+    localStorage.setItem("dmmb:lastRoute", location.pathname);
+  }, [location.pathname]);
 
   return (
-    <header className="h-auto! leading-normal! px-4 md:px-12 py-4 border-b border-gray-400 bg-gray-400">
-      <div className="max-w-7xl bg-gray-400 mx-auto flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6">
-        {/* Logo */}
-        <img
-          src={logo}
-          alt="DMBB Global"
-          className="h-16 md:h-32 w-auto object-contain"
-        />
-
-        {/* Text Block */}
-        <div className="text-center md:text-left leading-tight">
-          <Title
-            level={2}
-            className="mb-1! text-gray-900! font-semibold tracking-tight"
-          >
-            DMBB Global Freelance Tech Partners & Network
-          </Title>
-
-          {/* Meta Info */}
-          <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-3">
-            <Text className="text-xs text-gray-600">
-              Partners:{" "}
-              <span className="font-medium text-gray-800">
-                Dravinanshu Mishra
-              </span>{" "}
-              & <span className="font-medium text-gray-800">Biplab Biswas</span>
-            </Text>
-
-            <span className="hidden md:inline text-gray-300">|</span>
-
-            <Text className="text-xs text-gray-500">
-              Established 5 January {establishedYear}
+    <header className="sticky top-0 z-50 bg-[linear-gradient(to_bottom_right,#eef2ff,#ffffff,#e0e7ff)] border-b border-slate-200 backdrop-blur">
+      <div className="max-w-7xl mx-auto px-5 md:px-16 py-4 flex items-center justify-between">
+        {/* Brand */}
+        <div className="flex items-center gap-3">
+          <img
+            src={logo}
+            alt="DMBB Global"
+            className="h-10 w-auto object-contain"
+          />
+          <div className="leading-tight">
+            <Title level={5} className="mb-0! text-slate-900! font-semibold!">
+              DMBB Global
+            </Title>
+            <Text className="text-[11px] text-slate-600">
+              Freelance Tech Partners
             </Text>
           </div>
         </div>
+
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.path}
+              to={link.path}
+              className={({ isActive }) =>
+                `text-sm font-medium relative transition ${
+                  isActive
+                    ? "text-sky-600 after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:bg-sky-600"
+                    : "text-slate-600 hover:text-slate-900"
+                }`
+              }
+            >
+              {link.name}
+            </NavLink>
+          ))}
+        </nav>
+
+        {/* Mobile Hamburger */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="md:hidden text-slate-700 hover:text-slate-900"
+        >
+          {menuOpen ? <FiX size={26} /> : <FiMenu size={26} />}
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      <div
+        className={`md:hidden transition-all duration-300 overflow-hidden ${
+          menuOpen ? "max-h-screen" : "max-h-0"
+        } border-t border-slate-200 bg-white/90 backdrop-blur`}
+      >
+        <nav className="flex flex-col px-6 py-4 gap-4">
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.path}
+              to={link.path}
+              className={({ isActive }) =>
+                `text-sm font-medium ${
+                  isActive
+                    ? "text-sky-600"
+                    : "text-slate-700 hover:text-slate-900"
+                }`
+              }
+            >
+              {link.name}
+            </NavLink>
+          ))}
+          <div className="pt-4 border-t border-slate-200 text-xs text-slate-500">
+            © {establishedYear} DMBB Global
+          </div>
+        </nav>
       </div>
     </header>
   );
