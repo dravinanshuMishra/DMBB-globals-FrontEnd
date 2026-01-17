@@ -122,6 +122,7 @@ const Header = () => {
         </div>
 
         {/* MOBILE MENU */}
+        {/* MOBILE MENU */}
         <AnimatePresence>
           {menuOpen && (
             <Motion.div
@@ -136,6 +137,7 @@ const Header = () => {
                   <Motion.div key={link.path} variants={mobileMenuItem}>
                     <NavLink
                       to={link.path}
+                      onClick={() => setMenuOpen(false)} // <-- Close menu on click
                       className={({ isActive }) =>
                         `text-sm font-medium ${
                           isActive
